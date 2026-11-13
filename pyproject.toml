@@ -1,0 +1,83 @@
+[project]
+name = "etfcorr"
+version = "0.1.0"
+description = "Thematic ETF correlation structure, forecasting and hedging"
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+license = { text = "MIT" }
+authors = [{ name = "Filippo" }]
+dependencies = [
+  # arrays, tables, statistics
+  "numpy", "pandas", "scipy", "scikit-learn", "statsmodels", "pyarrow",
+  # config, CLI, plumbing
+  "pydantic>=2", "pyyaml", "typer", "rich", "tqdm", "joblib", "tenacity",
+  "networkx", "requests", "beautifulsoup4", "lxml",
+  # data
+  "yfinance>=1.7", "fredapi", "pandas-market-calendars",
+  # finance
+  "skfolio>=1.2", "arch>=8.0", "pymgarch>=0.3", "hmmlearn", "dcor", "purgedcv>=0.1.6",
+  # ml
+  "lightgbm>=4.7", "shap", "optuna",
+  # viz
+  "matplotlib", "seaborn", "plotly", "kaleido",
+]
+
+[project.optional-dependencies]
+# GPU/deep-learning rungs only (LSTM/TCN/GNN). torch-geometric-temporal is optional.
+dl = ["torch>=2.7", "torch-geometric>=2.6"]
+# Cross-check libraries (both depend on cvxpy, hence optional)
+xcheck = ["riskfolio-lib>=7.3", "pyportfolioopt"]
+app = ["streamlit"]
+dev = [
+  "pytest", "pytest-cov", "hypothesis", "ruff", "mypy", "pre-commit",
+  "jupyterlab", "jupytext", "nbstripout",
+  # type stubs used by mypy
+  "pandas-stubs", "types-PyYAML", "types-requests",
+]
+
+[project.scripts]
+etfcorr = "etfcorr.cli:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/etfcorr"]
+
+# ---------------------------------------------------------------- tooling
+[tool.ruff]
+line-length = 100
+src = ["src", "tests", "scripts"]
+target-version = "py311"
+
+[tool.ruff.lint]
+# E/F pyflakes+pycodestyle, I isort, UP pyupgrade, B bugbear, NPY numpy rules, SIM simplify
+select = ["E", "F", "I", "UP", "B", "NPY", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.12"
+files = ["src/etfcorr"]
+disallow_untyped_defs = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+no_implicit_optional = true
+# third-party libraries without stubs
+[[tool.mypy.overrides]]
+module = ["skfolio.*", "arch.*", "pymgarch.*", "hmmlearn.*", "dcor.*", "purgedcv.*",
+          "fredapi.*", "pandas_market_calendars.*", "yfinance.*", "shap.*", "optuna.*",
+          "networkx.*", "seaborn.*", "plotly.*", "scipy.*", "sklearn.*", "statsmodels.*",
+          "torch.*", "torch_geometric.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+markers = [
+  "slow: end-to-end or long-running tests",
+  "gpu: needs CUDA",
+  "network: touches the network (never run in CI or offline gate)",
+]
+
+[tool.coverage.run]
+source = ["src/etfcorr"]

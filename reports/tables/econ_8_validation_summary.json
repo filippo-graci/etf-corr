@@ -1,0 +1,110 @@
+{
+  "step": "8.3",
+  "mode": "validation",
+  "config_hash": "be75f3de824f",
+  "commit": "56c0a3dee17115441c6f18154631f58d6dd226f7",
+  "dirty": true,
+  "window": [
+    "2021-01-01",
+    "2022-12-31"
+  ],
+  "last_date_read": "2022-12-30",
+  "design": {
+    "declared_on": "2026-10-11",
+    "estimation": {
+      "D": 252,
+      "W": 104,
+      "M": 60,
+      "Q": 32
+    },
+    "estimators": [
+      "sample",
+      "ledoit_wolf",
+      "ledoit_wolf_corr",
+      "rmt",
+      "ewma",
+      "dcc"
+    ],
+    "h5_estimators": [
+      "ledoit_wolf_corr",
+      "rmt",
+      "dcc"
+    ],
+    "hedge_instrument": "SPY",
+    "hedge_window_days": 126,
+    "lasso_instruments": [
+      "SPY",
+      "QQQ",
+      "IWM",
+      "TLT",
+      "GLD",
+      "HYG"
+    ],
+    "stress_quantile": 0.9,
+    "calm_quantile": 0.5,
+    "block_days": 21,
+    "h5_variant": {
+      "declared_on": "2026-10-11",
+      "candidate": "ledoit_wolf_corr",
+      "replaces": "ledoit_wolf",
+      "note": "`ledoit_wolf` shrinks the covariance towards a scaled identity, which also pulls every variance towards the average; `rmt` and `dcc` keep the estimated variances and clean only the correlation, so the three were not treated alike. `ledoit_wolf_corr` applies Ledoit-Wolf to the standardised returns (the convention of correlation.estimators since Phase 2) and keeps the sample variances. It replaces `ledoit_wolf` in h5_estimators only if, on validation, the mean over the frequencies run of [minimum-variance volatility with the candidate minus with `ledoit_wolf`] is negative with a 95% interval that excludes zero. Otherwise it is reported beside the verdict and the design stays as declared.",
+      "adopted": true
+    },
+    "frozen_on": "2026-10-11"
+  },
+  "frequencies_skipped": [
+    "Q"
+  ],
+  "h5": {
+    "statistic": 0.0036506766731096946,
+    "ci_lower": 0.0022434923823202854,
+    "ci_upper": 0.005162132969577402,
+    "p_one_sided": 1.0,
+    "alpha": 0.05,
+    "n_cells": 7,
+    "cells": [
+      "minvar|D|ledoit_wolf_corr",
+      "minvar|D|rmt",
+      "minvar|D|dcc",
+      "minvar|W|ledoit_wolf_corr",
+      "minvar|W|rmt",
+      "minvar|M|ledoit_wolf_corr",
+      "minvar|M|rmt"
+    ],
+    "n_days": 503,
+    "h5_supported": false,
+    "variant": {
+      "candidate": "ledoit_wolf_corr",
+      "replaces": "ledoit_wolf",
+      "difference": -0.010073259753074751,
+      "ci_lower": -0.012587044419151497,
+      "ci_upper": -0.0075731414131318215,
+      "rule_met": true
+    },
+    "monthly_quarterly_minus_daily": {
+      "monthly_quarterly": 0.008145762978647997,
+      "daily": 0.0012319322528732506,
+      "difference": 0.006913830725774746,
+      "ci_lower": 0.004012097138297635,
+      "ci_upper": 0.010287968185653217
+    }
+  },
+  "h6": {
+    "method": "rolling",
+    "statistic": 0.20220688537965226,
+    "ci_lower": 0.04850505542695242,
+    "ci_upper": 0.33294735249399554,
+    "p_one_sided": 0.991504247876062,
+    "alpha": 0.05,
+    "he_stress": 0.46824391459185244,
+    "he_calm": 0.2660370292122002,
+    "n_stress": 51,
+    "n_calm": 254,
+    "h6_supported": false
+  },
+  "pbo": 0.4857142857142857,
+  "bootstrap": {
+    "n": 2000,
+    "seed": 0
+  }
+}

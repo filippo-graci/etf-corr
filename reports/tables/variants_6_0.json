@@ -1,0 +1,48 @@
+{
+  "step": "6.0",
+  "status": "validation window only; variants declared before they were run",
+  "config_hash": "be75f3de824f",
+  "variants_run": [
+    "V1",
+    "V2",
+    "R1",
+    "R2"
+  ],
+  "extra_configurations": 4,
+  "bootstrap": {
+    "n": 2000,
+    "seed": 0
+  },
+  "adoption": [
+    {
+      "variant": "V1",
+      "model": "har",
+      "checks": {
+        "T2_h5": {
+          "diff": -0.09720279290241993,
+          "upper": -0.05876823703828478,
+          "improves": true
+        },
+        "T2_h21": {
+          "diff": -0.04313596835613214,
+          "upper": -0.012942121364195371,
+          "improves": true
+        }
+      },
+      "adopted": true
+    },
+    {
+      "variant": "V2",
+      "model": "ridge",
+      "checks": {
+        "T1_h21": {
+          "diff": 0.0,
+          "upper": 0.0,
+          "improves": false,
+          "note": "no change"
+        }
+      },
+      "adopted": false
+    }
+  ]
+}

@@ -1,0 +1,295 @@
+{
+  "step": "7.3",
+  "mode": "validation",
+  "status": "validation rehearsal",
+  "config_hash": "be75f3de824f",
+  "commit": "56c0a3dee17115441c6f18154631f58d6dd226f7",
+  "dirty": true,
+  "window": [
+    "2021-01-04",
+    "2022-11-30"
+  ],
+  "last_date_read": "2022-12-30",
+  "plan": {
+    "declared_on": "2026-10-11",
+    "variant": "V1",
+    "targets": [
+      "T1",
+      "T1_matrix",
+      "T2",
+      "T3"
+    ],
+    "comparator_primary": "ewma",
+    "comparator_strict": "dcc",
+    "primary_challenger": "elastic_net",
+    "second_challenger": "lightgbm_graph_knn",
+    "frozen_on": "2026-10-11"
+  },
+  "best_rung_2_3_on_this_window": "elastic_net",
+  "models": {
+    "T1_h21": [
+      "persistence",
+      "historical_mean",
+      "ewma",
+      "constant_correlation",
+      "har",
+      "dcc",
+      "ridge",
+      "lasso",
+      "elastic_net",
+      "pcr",
+      "lightgbm",
+      "lightgbm_graph_knn",
+      "lightgbm_graph_threshold",
+      "lightgbm_graph_mst",
+      "lightgbm_graph_pmfg",
+      "lightgbm_graph_cluster",
+      "lightgbm_graph_sector",
+      "lightgbm_graph_random"
+    ],
+    "T1_h63": [
+      "persistence",
+      "historical_mean",
+      "ewma",
+      "constant_correlation",
+      "har",
+      "dcc",
+      "ridge",
+      "lasso",
+      "elastic_net",
+      "pcr",
+      "lightgbm",
+      "lightgbm_graph_knn",
+      "lightgbm_graph_threshold",
+      "lightgbm_graph_mst",
+      "lightgbm_graph_pmfg",
+      "lightgbm_graph_cluster",
+      "lightgbm_graph_sector",
+      "lightgbm_graph_random"
+    ],
+    "T1_matrix_h21": [
+      "persistence",
+      "historical_mean",
+      "ewma",
+      "constant_correlation",
+      "har"
+    ],
+    "T2_h5": [
+      "persistence",
+      "historical_mean",
+      "ewma",
+      "har",
+      "ridge",
+      "lasso",
+      "elastic_net",
+      "pcr",
+      "lightgbm"
+    ],
+    "T2_h21": [
+      "persistence",
+      "historical_mean",
+      "ewma",
+      "har",
+      "ridge",
+      "lasso",
+      "elastic_net",
+      "pcr",
+      "lightgbm"
+    ],
+    "T3_h5": [
+      "zero",
+      "persistence",
+      "momentum",
+      "historical_mean",
+      "ridge",
+      "lasso",
+      "elastic_net",
+      "pcr",
+      "lightgbm"
+    ],
+    "T3_h21": [
+      "zero",
+      "persistence",
+      "momentum",
+      "historical_mean",
+      "ridge",
+      "lasso",
+      "elastic_net",
+      "pcr",
+      "lightgbm"
+    ]
+  },
+  "gbm": {
+    "n_trials_per_refit": 20,
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "rung3_refits": 160,
+    "optuna_trials": 3200,
+    "graph_edges_by_fold": {
+      "lightgbm_graph_knn": [
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48
+      ],
+      "lightgbm_graph_threshold": [
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30
+      ],
+      "lightgbm_graph_mst": [
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24
+      ],
+      "lightgbm_graph_pmfg": [
+        69,
+        69,
+        69,
+        69,
+        69,
+        69,
+        69,
+        69
+      ],
+      "lightgbm_graph_cluster": [
+        71,
+        71,
+        71,
+        71,
+        71,
+        51,
+        71,
+        51
+      ],
+      "lightgbm_graph_sector": [
+        43,
+        43,
+        43,
+        43,
+        43,
+        43,
+        43,
+        43
+      ],
+      "lightgbm_graph_random": [
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48
+      ]
+    }
+  },
+  "h3": {
+    "task": "T1_h21",
+    "n_dates": 482,
+    "n_effective": 22.952380952380953,
+    "challenger": "elastic_net",
+    "challenger_frozen": true,
+    "alpha": 0.05,
+    "primary": {
+      "comparator": "ewma",
+      "loss_challenger": 0.029210296550185203,
+      "loss_comparator": 0.034667931222642986,
+      "mean_diff": -0.005457634672457778,
+      "test": "dm_hln",
+      "p_one_sided": 0.0890865571222808,
+      "p_clark_west_sensitivity": 0.00072077805368961,
+      "p_adjusted": 0.1781731142445616,
+      "better_and_significant": false
+    },
+    "strict": {
+      "comparator": "dcc",
+      "loss_challenger": 0.029210296550185203,
+      "loss_comparator": 0.03361566152526373,
+      "mean_diff": -0.004405364975078533,
+      "test": "dm_hln",
+      "p_one_sided": 0.12343037115079351,
+      "p_clark_west_sensitivity": NaN,
+      "p_adjusted": 0.24686074230158703,
+      "better_and_significant": false
+    },
+    "second": {
+      "challenger": "lightgbm_graph_knn",
+      "comparator": "ewma",
+      "loss_challenger": 0.03167806194513619,
+      "loss_comparator": 0.034667931222642986,
+      "mean_diff": -0.002989869277506786,
+      "test": "dm_hln",
+      "p_one_sided": 0.3068821852891562,
+      "p_clark_west_sensitivity": NaN,
+      "p_adjusted": 0.6137643705783123,
+      "better_and_significant": false,
+      "strict": {
+        "comparator": "dcc",
+        "loss_challenger": 0.03167806194513619,
+        "loss_comparator": 0.03361566152526373,
+        "mean_diff": -0.0019375995801275418,
+        "test": "dm_hln",
+        "p_one_sided": 0.0982272169640947,
+        "p_clark_west_sensitivity": NaN,
+        "p_adjusted": 0.1964544339281894,
+        "better_and_significant": false
+      }
+    },
+    "n_challengers": 2,
+    "p_for_holm": 0.1781731142445616,
+    "h3_supported": false,
+    "family": {
+      "n_models": 12,
+      "smallest_p_model": "elastic_net",
+      "smallest_p": 0.0890865571222808,
+      "bonferroni_p": 1.0
+    },
+    "mcs": {
+      "n_models": 18,
+      "kept": [
+        "pcr",
+        "har",
+        "lightgbm_graph_random",
+        "historical_mean",
+        "ewma",
+        "lightgbm_graph_sector",
+        "constant_correlation",
+        "dcc",
+        "lightgbm_graph_mst",
+        "lightgbm_graph_cluster",
+        "lightgbm_graph_threshold",
+        "ridge",
+        "lasso",
+        "lightgbm_graph_pmfg",
+        "lightgbm_graph_knn",
+        "elastic_net"
+      ],
+      "challenger_kept": true,
+      "comparator_kept": true
+    }
+  },
+  "bootstrap": {
+    "n": 2000,
+    "seed": 0
+  }
+}

@@ -1,0 +1,29 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.1.0
+      # Both action versions checked on GitHub on 2026-11-02 (checkout v7.0.1 is the latest v7;
+      # setup-uv v10.1.0 exists, latest v10.3.3).
+      # requirements.lock pins the versions behind the results (`make lock`, exported from the
+      # lock of the private research workspace); --no-sync below keeps uv run from re-resolving them.
+      - name: Install the pinned versions (CPU only, no deep-learning extra)
+        run: |
+          uv venv --python 3.12
+          uv pip sync requirements.lock
+          uv pip install --no-deps -e .
+      - name: Lint
+        run: |
+          uv run --no-sync ruff check .
+          uv run --no-sync ruff format --check .
+      - name: Types
+        run: uv run --no-sync mypy
+      - name: Tests (no network, no GPU)
+        run: uv run --no-sync pytest -q -m "not slow and not gpu and not network"

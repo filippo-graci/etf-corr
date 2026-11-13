@@ -1,0 +1,44 @@
+# Universe of the pre-2014 replication root (E5-E8, config/experiment.yaml, tag
+# replication-freeze-v1). Rows copied verbatim from config/universe.yaml: the 25 core funds and the
+# controls the replication uses (SPY, QQQ, IWM, TLT, GLD, HYG, ^VIX). Funds launched after
+# 2013-12-31 are left out because `data validate` fails on a ticker with no rows at all. The panel
+# rule (core minus SMH and OIH, first row by 2006-07-10) is applied by
+# scripts/replication_pre2014.py, not here. experiment.yaml and hypotheses.lock are symlinks to the
+# main config, so the lock and the design are the main project's.
+version: 1
+start_date: "2006-01-01"
+min_adv_usd: 10000000
+
+tickers:
+  - {ticker: SMH,  sector: ai_semis, panel: core,     name: "VanEck Semiconductor ETF"}
+  - {ticker: SOXX, sector: ai_semis, panel: core,     name: "iShares Semiconductor ETF", overlaps_with: [SMH]}
+  - {ticker: IGV,  sector: ai_semis, panel: core,     name: "iShares Expanded Tech-Software Sector ETF"}
+  - {ticker: XLE,  sector: energy_trad, panel: core,     name: "Energy Select Sector SPDR Fund"}
+  - {ticker: XOP,  sector: energy_trad, panel: core,     name: "SPDR S&P Oil & Gas Exploration & Production ETF"}
+  - {ticker: OIH,  sector: energy_trad, panel: core,     name: "VanEck Oil Services ETF"}
+  - {ticker: AMLP, sector: energy_trad, panel: core,     name: "Alerian MLP ETF"}
+  - {ticker: ICLN, sector: clean_energy, panel: core,     name: "iShares Global Clean Energy ETF"}
+  - {ticker: TAN,  sector: clean_energy, panel: core,     name: "Invesco Solar ETF", overlaps_with: [ICLN]}
+  - {ticker: LIT,  sector: clean_energy, panel: core,     name: "Global X Lithium & Battery Tech ETF"}
+  - {ticker: URA,  sector: clean_energy, panel: core,     name: "Global X Uranium ETF"}
+  - {ticker: XLV,  sector: healthcare, panel: core,     name: "Health Care Select Sector SPDR Fund"}
+  - {ticker: IBB,  sector: healthcare, panel: core,     name: "iShares Biotechnology ETF"}
+  - {ticker: XBI,  sector: healthcare, panel: core,     name: "SPDR S&P Biotech ETF"}
+  - {ticker: IHI,  sector: healthcare, panel: core,     name: "iShares U.S. Medical Devices ETF"}
+  - {ticker: IHF,  sector: healthcare, panel: core,     name: "iShares U.S. Healthcare Providers ETF", notes: "promoted extended->core 2026-09-28, Question 3 (docs/DECISION_LOG.md): lowest measured holdings overlap (0.0276) vs the sector's core members"}
+  - {ticker: ITA,  sector: defense, panel: core,     name: "iShares U.S. Aerospace & Defense ETF"}
+  - {ticker: XAR,  sector: defense, panel: core,     name: "SPDR S&P Aerospace & Defense ETF"}
+  - {ticker: PPA,  sector: defense, panel: core,     name: "Invesco Aerospace & Defense ETF"}
+  - {ticker: GDX,  sector: metals_mining, panel: core,     name: "VanEck Gold Miners ETF"}
+  - {ticker: GDXJ, sector: metals_mining, panel: core,     name: "VanEck Junior Gold Miners ETF"}
+  - {ticker: XME,  sector: metals_mining, panel: core,     name: "SPDR S&P Metals & Mining ETF"}
+  - {ticker: COPX, sector: metals_mining, panel: core,     name: "Global X Copper Miners ETF"}
+  - {ticker: SIL,  sector: metals_mining, panel: core,     name: "Global X Silver Miners ETF"}
+  - {ticker: REMX, sector: metals_mining, panel: core,     name: "VanEck Rare Earth and Strategic Metals ETF", notes: "promoted extended->core 2026-09-28, Question 3 (docs/DECISION_LOG.md): lowest measured holdings overlap (0.0108) vs the sector's core members"}
+  - {ticker: SPY,  sector: control, panel: control, name: "SPDR S&P 500 ETF Trust"}
+  - {ticker: QQQ,  sector: control, panel: control, name: "Invesco QQQ Trust"}
+  - {ticker: IWM,  sector: control, panel: control, name: "iShares Russell 2000 ETF"}
+  - {ticker: TLT,  sector: control, panel: control, name: "iShares 20+ Year Treasury Bond ETF"}
+  - {ticker: GLD,  sector: control, panel: control, name: "SPDR Gold Shares"}
+  - {ticker: "^VIX", sector: control, panel: control, name: "CBOE Volatility Index", notes: "index, not investable"}
+  - {ticker: HYG,  sector: control, panel: control, name: "iShares iBoxx $ High Yield Corporate Bond ETF", notes: "optional control"}

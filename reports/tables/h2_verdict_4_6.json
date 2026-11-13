@@ -1,0 +1,73 @@
+{
+  "step": "4.6",
+  "status": "descriptive, in-sample; rule confirmed 2026-10-02",
+  "verdict": "supported",
+  "clause1_direction": true,
+  "clause1_p_bootstrap": 0.0009995002498750624,
+  "clause2": "supported",
+  "threshold": 0.5,
+  "primary": {
+    "name": "primary",
+    "share": 0.8837560329897305,
+    "share_lower": 0.7613642173125194
+  },
+  "market_shares": {
+    "SPY return delta": 1.3327851233727852,
+    "VIX log-change delta": 0.602308136191105
+  },
+  "residual_reading": "not identified",
+  "notes": [
+    "the lower bound of the primary share interval is also >= 0.5",
+    "share above 1 on SPY return delta: the adjustment overshoots (the adjusted difference has the opposite sign to the raw one); this is not 'more than 100% explained by volatility'",
+    "the non-volatility part of the change is not identified: the adjusted high-minus-low difference changes sign or spans zero across the lines"
+  ],
+  "settings": {
+    "n_bootstrap": 2000,
+    "seed": 0,
+    "mean_block_length": 15.0,
+    "n_assets": 25,
+    "n_cross_sector_pairs": 257,
+    "n_rows": 3201,
+    "regime": 2,
+    "reference": 0
+  },
+  "robustness": [
+    {
+      "line": "day-t labels (contemporaneous)",
+      "clause1": true,
+      "share": 0.7993719377963033,
+      "share_lower": 0.6955477039577116,
+      "same_reading_as_primary_rule": true
+    },
+    {
+      "line": "mean block length 60",
+      "clause1": true,
+      "share": 0.8837560329897305,
+      "share_lower": 0.7410069742904443,
+      "same_reading_as_primary_rule": true
+    },
+    {
+      "line": "mean block length 120",
+      "clause1": true,
+      "share": 0.8837560329897305,
+      "share_lower": 0.7309323932134002,
+      "same_reading_as_primary_rule": true
+    },
+    {
+      "line": "without 2020-02-24 to 2020-06-30",
+      "clause1": true,
+      "share": 0.8788936198366221,
+      "share_lower": 0.7177704995150213,
+      "same_reading_as_primary_rule": true
+    },
+    {
+      "line": "within-sector pairs (contrast)",
+      "clause1": true,
+      "share": 1.4767892510622336,
+      "share_lower": 1.163519010782647,
+      "same_reading_as_primary_rule": true
+    }
+  ],
+  "reproduces_4_2": true,
+  "reproduction_differences": []
+}

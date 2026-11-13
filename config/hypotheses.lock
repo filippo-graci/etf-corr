@@ -1,0 +1,17 @@
+{
+  "algorithm": "sha256",
+  "covers": [
+    "hypotheses",
+    "inference"
+  ],
+  "fingerprint": "9e5af603be2006fc9f2f322159d006b35d2818d0b930f88714f7f69543776f26",
+  "hypothesis_ids": [
+    "H1",
+    "H2",
+    "H3",
+    "H4",
+    "H5",
+    "H6"
+  ],
+  "locked_on": "2026-09-21"
+}

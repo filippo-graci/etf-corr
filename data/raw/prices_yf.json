@@ -1,0 +1,572 @@
+{
+  "asof": "2026-09-25",
+  "fetched_at": "2026-09-27T15:57:06.410397+00:00",
+  "received": [
+    "AIQ",
+    "AMLP",
+    "ARKF",
+    "ARKG",
+    "BITO",
+    "BITQ",
+    "BLOK",
+    "BOTZ",
+    "BTC-USD",
+    "CLOU",
+    "COPX",
+    "DBC",
+    "ETH-USD",
+    "FAN",
+    "FINX",
+    "GDX",
+    "GDXJ",
+    "GLD",
+    "HYG",
+    "IBB",
+    "IBIT",
+    "ICLN",
+    "IGV",
+    "IHF",
+    "IHI",
+    "ITA",
+    "IWM",
+    "LIT",
+    "NLR",
+    "OIH",
+    "PBW",
+    "PICK",
+    "PPA",
+    "QCLN",
+    "QQQ",
+    "REMX",
+    "SHLD",
+    "SIL",
+    "SMH",
+    "SOXX",
+    "SPY",
+    "TAN",
+    "TLT",
+    "UNG",
+    "URA",
+    "USO",
+    "UUP",
+    "VDE",
+    "WCLD",
+    "XAR",
+    "XBI",
+    "XLE",
+    "XLV",
+    "XME",
+    "XOP",
+    "^VIX"
+  ],
+  "requested": [
+    "SMH",
+    "SOXX",
+    "IGV",
+    "BOTZ",
+    "AIQ",
+    "CLOU",
+    "WCLD",
+    "XLE",
+    "XOP",
+    "OIH",
+    "AMLP",
+    "USO",
+    "UNG",
+    "VDE",
+    "ICLN",
+    "TAN",
+    "LIT",
+    "URA",
+    "QCLN",
+    "FAN",
+    "PBW",
+    "NLR",
+    "XLV",
+    "IBB",
+    "XBI",
+    "IHI",
+    "ARKG",
+    "IHF",
+    "ITA",
+    "XAR",
+    "PPA",
+    "SHLD",
+    "GDX",
+    "GDXJ",
+    "XME",
+    "COPX",
+    "SIL",
+    "REMX",
+    "PICK",
+    "ARKF",
+    "FINX",
+    "BLOK",
+    "IBIT",
+    "BITO",
+    "BITQ",
+    "BTC-USD",
+    "ETH-USD",
+    "SPY",
+    "QQQ",
+    "IWM",
+    "TLT",
+    "GLD",
+    "UUP",
+    "^VIX",
+    "DBC",
+    "HYG"
+  ],
+  "sha256": "334a038bac0d156dfa47ced4a6d377e5c164cf48ba8288808c9aea4885c22214",
+  "start": "2014-01-01",
+  "tickers": {
+    "AIQ": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 2102,
+      "sha256": "5a3f59d136c3f94028f4e7e77ccd090028c91390ad8265c9d7dbf1c55a59adf4",
+      "status": "fetched"
+    },
+    "AMLP": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "032be489fd1b884e349fed0f4bd78e67cb64d68a154adc9dd32ccb3e90e3bb21",
+      "status": "fetched"
+    },
+    "ARKF": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 1922,
+      "sha256": "d10a5a54622b4d715e386fd65e1dbae6399531671e4bb304aee36a881c4a61d2",
+      "status": "fetched"
+    },
+    "ARKG": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 2992,
+      "sha256": "a2ccd78e45e622e932a8299fa02dd16a058bd4b9d434393601c467f15bb58398",
+      "status": "fetched"
+    },
+    "BITO": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 1238,
+      "sha256": "b7fe2d9f55a5a537080767e218529e743998f6df79478809340553b186756489",
+      "status": "fetched"
+    },
+    "BITQ": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 1350,
+      "sha256": "460fe3fd9a11c3eec7292135c85c5523ef2d8e2093bdbe0f50823bade0c01202",
+      "status": "fetched"
+    },
+    "BLOK": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 2179,
+      "sha256": "5d07a581449674d6bf2b4692b35fbabcb03dbe5b214f8e38b3bbdf9a00e361ea",
+      "status": "fetched"
+    },
+    "BOTZ": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 2523,
+      "sha256": "ad35bc7fb8014d56d764ccc31abb06a0a8cd9f83013b50787a192e77562ba037",
+      "status": "fetched"
+    },
+    "BTC-USD": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 4392,
+      "sha256": "8204068ef4038b20497a35a4a5680fce9ce3a4afdada4838a3a6440f65310ef6",
+      "status": "fetched"
+    },
+    "CLOU": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 1872,
+      "sha256": "58616035419bc7bb238fbe3700ea702ad828a2c871e6c356cf7c23eef3f566ae",
+      "status": "fetched"
+    },
+    "COPX": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "edbaef4aab425bc0258c52353dd368447a78a2a083b345724c3cebe77c09adca",
+      "status": "fetched"
+    },
+    "DBC": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "4532ea493c873bb643407fc92e1e4851c737c43475e3b1b0ab5f3e156658c696",
+      "status": "fetched"
+    },
+    "ETH-USD": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3243,
+      "sha256": "4b2b83090487544ed3ce769e34eba7abe294049f9c4e04ece8b52bc9c86300fc",
+      "status": "fetched"
+    },
+    "FAN": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "b2f3c5515f1f02980e6843c61f78e929d3547fc21209588e613a5ff17195b896",
+      "status": "fetched"
+    },
+    "FINX": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 2523,
+      "sha256": "9319253f0a81971d9e559f15bc0230f72cdac9c549a921709f810fd2e0ecb387",
+      "status": "fetched"
+    },
+    "GDX": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "acde3abd6a51642a1ba4e8ed5823e6db0c05cf7b77dbc0a7a9c78596e5027447",
+      "status": "fetched"
+    },
+    "GDXJ": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "785d518ab20a450a2aae9533d658d1a3319c7ff54f7f44f0b655cdcad3e97140",
+      "status": "fetched"
+    },
+    "GLD": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "fa1139a8966f9e264473c5c528ef556e388dd3949fd2722a8c17b41984270a1b",
+      "status": "fetched"
+    },
+    "HYG": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "6054f38824550acbaba3baacbe5629ef8c43de6e9c788b8be0fca612f4615888",
+      "status": "fetched"
+    },
+    "IBB": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "4de37cc9545b7b8a148c946a2d604431148cfeb3788565fe29a5f3452f002326",
+      "status": "fetched"
+    },
+    "IBIT": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 679,
+      "sha256": "66758676f2f91b833775a1fd34451b0e1cc1dd248c817093f35d45a019f01e72",
+      "status": "fetched"
+    },
+    "ICLN": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "eee00f95ecd9fbd440eba8d7e46ac45ac8ec199ef1e1d1a3093df835fb383bc5",
+      "status": "fetched"
+    },
+    "IGV": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "15c7fd6dac360d6feae58c7f74e5d0d639d547e0996dcc460f2c00de7ce76632",
+      "status": "fetched"
+    },
+    "IHF": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "d4f5afe3b5da7ce44fecedc7b11ef6425cb9bf350c0ced05b2be176886e854d9",
+      "status": "fetched"
+    },
+    "IHI": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "bed986049e31deaaba4804a5ddfc7885a68b7dd53c1fc41a586bd9b78f29ddc8",
+      "status": "fetched"
+    },
+    "ITA": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "dc356b8f93c9ef5ec6d5b9d35c54a1471d84368aee6b0c3d6c65b75838115c08",
+      "status": "fetched"
+    },
+    "IWM": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "9fc0ed4b43c4f67c5223decc401c24344452adad0952ab19d59c298ea9d30110",
+      "status": "fetched"
+    },
+    "LIT": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "464bb022144c1f46985881a43ea18cb04d2d3b412d5fd7b8494d456544eb5b66",
+      "status": "fetched"
+    },
+    "NLR": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "5d92d2e470a126683902134aae3b5a67c42f9771299f37bc536c7605b20e3dbb",
+      "status": "fetched"
+    },
+    "OIH": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "476f8ccc14b003df7127717aae3373f63cc3d72e89c7313fe4b93c584fcd3cd9",
+      "status": "fetched"
+    },
+    "PBW": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "2c172793e66782551b40d1b00f659584d53907c1288dfe42ec30e7cf31863856",
+      "status": "fetched"
+    },
+    "PICK": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "e7a6fd3bb9ec76de09ef50a5966f76b50a0fec0c045e3481a52ae0db141e4689",
+      "status": "fetched"
+    },
+    "PPA": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "6551bfd01b8669f69f377cfff473210d30aff68a8c128ec37460cc8cde676bc6",
+      "status": "fetched"
+    },
+    "QCLN": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "4ffba4faf4cc4751ad92a08accf3b97b0e26d2e18a86bfadc2e9a6ef10a498b7",
+      "status": "fetched"
+    },
+    "QQQ": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "4378c36f8aa986729a6ec2fa327c95f59db402477120ce944fa454b6611c2af5",
+      "status": "fetched"
+    },
+    "REMX": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "20a635c601d6a12cdaa9f44b07542c3fec6f4acb3fa43eb27293d3cee135af2f",
+      "status": "fetched"
+    },
+    "SHLD": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 761,
+      "sha256": "0a9399ef464863d8ec7490ddcb00646e3bbed32c5e95e23545bf46c7bc57529f",
+      "status": "fetched"
+    },
+    "SIL": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "09033a25ca1c059d9a02aa4174d717c87aceb62d633303d958310cc82c3625ff",
+      "status": "fetched"
+    },
+    "SMH": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "905c20eae92c25b49db9f07e6414785ec999b99c670408f33a3f7556e46ea06c",
+      "status": "fetched"
+    },
+    "SOXX": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "da34ac964dd704eca5b214f27d69a54c4b85ab3d3aeb81332e84153905437132",
+      "status": "fetched"
+    },
+    "SPY": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "fc98b7f9bc7ab0daeb92c72367120bc359552a9e2df963100b1ecf066ae0f82b",
+      "status": "fetched"
+    },
+    "TAN": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "df0fa9c7f4b48d17f3957205f438219b02d94523fb8f79f363b1a3393ccb8e32",
+      "status": "fetched"
+    },
+    "TLT": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "3ec133039cbe63d32fdbfb4436a113d72eda0cd4a49fb8a61d3503ce6a96ea98",
+      "status": "fetched"
+    },
+    "UNG": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "b9bc113d326e9bffa21f43dbd950d89de475b8bfb4224af5f7424e4fc3cad089",
+      "status": "fetched"
+    },
+    "URA": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "fa9995b095e6b50b95e4f7a341f37407c492f573179f226cf54124708f76f8ab",
+      "status": "fetched"
+    },
+    "USO": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "b67aef49769bcd4d596e21254d038d74eb6e7021935c33b9129c548afd25cc2d",
+      "status": "fetched"
+    },
+    "UUP": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "4146d6789c64257596f3f784ffe28e8f2ed3a34c0547912a6bd39941a8873eeb",
+      "status": "fetched"
+    },
+    "VDE": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "765e56ed8cc6b6b7e0ca0d6cd5b5e62f0b87356776bc37c542c9b27b3f712f9f",
+      "status": "fetched"
+    },
+    "WCLD": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 1773,
+      "sha256": "0d2af39f02eee812bb25fee5e9ada444887403ce38a0bfbbfde9bd5fc5959c2f",
+      "status": "fetched"
+    },
+    "XAR": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "8a0bcfc24848b3f06327b7fb826a927e47a49bdcd564a44037d8e9ddd9be03c1",
+      "status": "fetched"
+    },
+    "XBI": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "0d84ebee028006322f053f17a49cb9c36371aa07e87e34002ba60dda25ee65a6",
+      "status": "fetched"
+    },
+    "XLE": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "ed297508faf8fe57a952122eb67b8cfc37cf1e0e0615cb41d46e8ab31c6afd5e",
+      "status": "fetched"
+    },
+    "XLV": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "3973e264786e740ee6b9f6988e3010f8a8cb3395498bf243df37a787a117caa4",
+      "status": "fetched"
+    },
+    "XME": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "955528bd37694d5adb44d03db4aa13935c3bf48f7950bc94baca6549961d1fc3",
+      "status": "fetched"
+    },
+    "XOP": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3202,
+      "sha256": "5d8ae272f7713bdaf128b17c3aff0e94209330b7b93e70d4b428f3421db986c9",
+      "status": "fetched"
+    },
+    "^VIX": {
+      "asof": "2026-09-25",
+      "error": "",
+      "fetched_at": "2026-09-27T15:56:12.322208+00:00",
+      "rows": 3204,
+      "sha256": "6c7a487af6b91676c963583b5e31c5104c755170abec8cae8827e46cf8a060ba",
+      "status": "fetched"
+    }
+  }
+}

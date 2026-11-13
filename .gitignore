@@ -1,0 +1,44 @@
+# --- secrets and environments
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.ipynb_checkpoints/
+
+# --- vendor data is never committed (personal-use terms); derived results are
+data/raw/*
+data/interim/*
+data/processed/*
+data/external/*
+!data/raw/.gitkeep
+!data/interim/.gitkeep
+!data/processed/.gitkeep
+!data/external/.gitkeep
+# download logs (.json with sha256) ARE committed
+!data/raw/*.json
+# fixtures are committed (tiny synthetic/real samples for tests and CI)
+!data/fixtures/
+*.parquet
+!data/fixtures/*.parquet
+
+# --- model runs and logs
+artifacts/*
+!artifacts/.gitkeep
+
+# --- OS / editor
+.DS_Store
+.idea/
+.vscode/
+*.egg-info/
+dist/
+build/
+
+# --- reference papers: research copies, never committed (copyright); sources.tsv and README.md are
+references/pdf/
+references/md/
+reports/make_all.log

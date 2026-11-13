@@ -1,0 +1,50 @@
+{
+  "status": "E9, in-sample and descriptive, run once",
+  "config_hash": "be75f3de824f",
+  "commit": "6bb6179b5ddeb6c51dfe8edd641c3e9a4edc38a7",
+  "factors": [
+    "Mkt-RF",
+    "SMB",
+    "HML",
+    "RMW",
+    "CMA",
+    "Mom",
+    "USO",
+    "GLD",
+    "TLT"
+  ],
+  "factor_files": {
+    "fetched_at": "2026-11-01T20:46:44.314550+00:00",
+    "files": {
+      "F-F_Research_Data_5_Factors_2x3_daily_CSV.zip": {
+        "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_daily_CSV.zip",
+        "sha256": "e58577223032aa45071a46686f7068900c371b516c9eb04e28e974c34264f84f"
+      },
+      "F-F_Momentum_Factor_daily_CSV.zip": {
+        "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_daily_CSV.zip",
+        "sha256": "e56d5bc845544e2993e77353b12c611cfce3149ef754f9b59fc67904ddadd369"
+      }
+    },
+    "rows": 15918,
+    "first": "1963-07-01",
+    "last": "2026-09-30"
+  },
+  "E9": {
+    "supported": false,
+    "p_one_sided": 0.1584207896051974,
+    "alpha": 0.05,
+    "value": 0.009211292834448269,
+    "ci_lower": -0.00923504390050783,
+    "ci_upper": 0.027667688640910952,
+    "n_days": 2264,
+    "n_low": 756,
+    "n_high": 754,
+    "block": 13.0,
+    "first": "2014-01-06",
+    "last": "2022-12-30"
+  },
+  "bootstrap": {
+    "n": 2000,
+    "seed": 0
+  }
+}

@@ -1,0 +1,487 @@
+# Experiment configuration for etf-corr. Validated by etfcorr.config.ExperimentConfig.
+#
+# PRE-REGISTRATION: the `hypotheses` and `inference` blocks below are fingerprinted into
+# config/hypotheses.lock. `etfcorr check-config` fails if they differ from the lock.
+# Hypotheses are never edited after results exist: add an exploratory entry (E1, E2, ...) instead.
+# Everything else in this file (horizons, windows, models, ...) may change, but every change
+# alters the config hash that is embedded in each run id.
+version: 1
+
+seeds: [0, 1, 2, 3, 4]
+device: cuda          # "auto" and "cuda" fall back to cpu when the GPU chain is unusable
+threads: 8            # BLAS/OpenMP threads (matches RECOMMENDED_THREADS of scripts/00_check_env.py)
+
+horizons: [D, W, M, Q]          # daily, weekly (Friday close), monthly, quarterly (period ends)
+windows_days: [63, 126, 252]    # estimation windows in trading days (about 3, 6, 12 months)
+ewma_lambda: 0.94
+
+splits:
+  train: ["2016-01-01", "2020-12-31"]
+  val:   ["2021-01-01", "2022-12-31"]
+  test:  ["2023-01-01", "2026-09-18"]   # touched once, in Phase 7; 2026-09-18 = last complete Friday
+  walk_forward: {initial_years: 5, refit_every: QE, embargo_days: 5}
+
+costs_bps: [0, 5, 10]
+
+# Model grids are filled in Phases 5-7 (model ladder). Left empty on purpose: no grid is
+# fixed before the corresponding baseline exists.
+models: {}
+
+# Phase 5 forecasting design. FIXED 2026-10-11, before any forecasting model was fitted and with
+# the test window unread (see docs/checks/5.1.md). Outside the pre-registration lock, inside the
+# config hash. H3's primary target is T1 at 21 trading days ("1-month-ahead average cross-sector
+# correlation"); everything else here is a secondary, exploratory target.
+forecasting:
+  fixed_on: "2026-10-11"
+  primary_target: T1
+  primary_horizon_days: 21
+  horizons_days:            # forecast horizon h in trading days; origins are daily (overlapping)
+    T1: [21, 63]            # average cross-sector realised correlation over days t+1..t+h
+    T1_matrix: [21]         # the full realised correlation matrix over the same days
+    T2: [5, 21]             # per-asset realised variance (sum of squared daily returns)
+    T3: [5, 21]             # cross-sectional rank of the h-day return
+  feature_windows_days: [21, 63, 126, 252]
+  simple_baselines: [persistence, historical_mean, ewma, constant_correlation, har, dcc]
+  linear_models: [ridge, lasso, elastic_net, pcr]
+  losses:
+    T1: mse_fisher_z        # squared error of Fisher-z(average correlation)
+    T1_matrix: frobenius    # root mean squared error over all pairs, in correlation units
+    T2: qlike               # Patton (2011) QLIKE on the variance
+    T3: rank_ic             # mean cross-sectional Spearman rank correlation per date
+  inner_folds: 3            # purged walk-forward folds inside each training window (tuning)
+  alpha_grid: [0.003, 0.01, 0.03, 0.1, 0.3, 1.0]   # per observation, on standardised X and y
+  l1_ratio: 0.5
+  pcr_components: [1, 2, 3, 5]
+
+  # ---- Declared 2026-10-11, AFTER the Phase 5 validation table was seen and BEFORE any of the
+  # runs below. The design above (tag design-v1) is unchanged. Everything here is evaluated on
+  # the validation window only and counts as a configuration tried.
+  variants:
+    - id: V1
+      declared_on: "2026-10-11"
+      kind: log_bias_correction
+      targets: [T2]
+      note: >-
+        Fitted log-variance forecasts are turned into variance forecasts as exp(f + s2/2), with
+        s2 the variance of the training residuals of the same fit (per asset), instead of exp(f).
+        Adopted for Phase 6 only if the QLIKE of HAR falls at both T2 horizons with a 95%
+        interval on the per-date difference that excludes zero.
+    - id: V2
+      declared_on: "2026-10-11"
+      kind: ridge_grid
+      targets: [T1, T2, T3]
+      ridge_alpha_grid: [0.003, 0.01, 0.03, 0.1, 0.3, 1.0, 3.0, 10.0, 30.0, 100.0]
+      note: >-
+        Ridge chose the largest penalty of the design-v1 grid in 7 of 8 refits for T1, so the grid
+        is extended upward by four values. Adopted for Phase 6 only if ridge's loss on T1 at 21
+        days falls with a 95% interval on the per-date difference that excludes zero.
+    - id: R1
+      declared_on: "2026-10-11"
+      kind: exclude_training_window
+      targets: [T1]
+      window: ["2020-02-24", "2020-06-30"]
+      note: >-
+        Robustness only: training origins whose origin or label window touches the spring-2020
+        window (the one fixed in step 4.6) are dropped. Features still see those days.
+    - id: R2
+      declared_on: "2026-10-11"
+      kind: dcc_drop_assets
+      targets: [T1]
+      assets: [AMLP]
+      note: >-
+        Robustness only: the DCC baseline is fitted without AMLP (GARCH persistence at its bound
+        in step 4.4); the target is still the average over the full core panel.
+  gbm:                        # rung 3; tuned on the purged inner folds, like the linear rung
+    declared_on: "2026-10-11"
+    targets: [T1, T2, T3]
+    n_trials: 20              # Optuna (TPE, seeded) trials per refit; the final fit is repeated for every seed in `seeds`
+    n_jobs: 1                 # changed from 8 on 2026-10-11 before the first full run: on these table sizes one thread is 3-8x faster (measured); a computational setting, not a tuning choice
+    search_space:             # [low, high]; learning_rate and lambda_l2 are sampled on a log scale
+      num_leaves: [2, 15]
+      min_data_in_leaf: [10, 100]
+      learning_rate: [0.01, 0.2]
+      n_estimators: [50, 400]
+      feature_fraction: [0.5, 1.0]
+      lambda_l2: [0.01, 10.0]
+  # ---- Declared 2026-10-11 (Phase 7, step 7.0), BEFORE any graph model was fitted and with the
+  # test window unread. One extra rung-3 model per kind: the LightGBM of `gbm` (same budget, same
+  # search space) on the common features plus graph aggregates. Each kind is a configuration tried.
+  graph:
+    declared_on: "2026-10-11"
+    targets: [T1]             # H3's target only; T2/T3 neighbour aggregates are not built
+    # holdings-overlap is absent on purpose: the only snapshots on disk are dated 2026 (not point-in-time)
+    kinds: [knn, threshold, mst, pmfg, cluster, sector, random]
+    windows_days: [21, 63]    # trailing windows of the pairwise correlations that are aggregated over edges
+    similarity_window_days: 63  # the graph is built from the training-window mean of this window's pair correlations
+    knn_k: 3                  # each asset's 3 most correlated assets (union, so degrees are >= 3)
+    threshold_quantile: 0.9   # keep the top 10% of pairs
+    seed: 0                   # random graph (ablation): as many edges as the kNN graph
+  # ---- Declared 2026-10-11 (step 7.0). What `etfcorr eval --final` runs, once, on the test window.
+  # The comparators are the decision of 2026-10-11 (status/phase_5.md). `primary_challenger` is the
+  # rung 2-3 model with the lowest validation loss on the primary target; it and `frozen_on` are
+  # filled at the freeze (tag final-freeze-v1), from validation results only.
+  final:
+    declared_on: "2026-10-11"
+    variant: V1               # design-v2 = design-v1 + V1 (step 6.0)
+    targets: [T1, T1_matrix, T2, T3]
+    comparator_primary: ewma  # best of the four baselines H3 names, on validation
+    comparator_strict: dcc    # best of all simple baselines, on validation
+    primary_challenger: elastic_net   # lowest validation loss of the 12 rung 2-3 models (0.0292; step 7.3)
+    # Filippo, 2026-10-11: "why not test both? ... it's better to do a wider test". The best tree/graph
+    # model on validation (0.0317) is a second challenger; H3 is then read over the two with a
+    # Bonferroni factor of 2 (evaluation/final.py). Clark-West is reported beside DM-HLN, not instead.
+    second_challenger: lightgbm_graph_knn
+    frozen_on: "2026-10-11"
+  mcs_size: 0.10              # Model Confidence Set level (Hansen, Lunde and Nason 2011)
+  # ---- H4, declared 2026-11-01. The Phase 7 test window was read for H3 on 2026-10-11, so every
+  # number of the comparator on it is known; no temporal graph network had been fitted on any
+  # window. Developed on validation only; the test window is read once, through
+  # `scripts/h4_export.py --final --confirm-unseal`, after `frozen_on` is set and committed.
+  # Model (`scripts/h4_tgnn.py`, torch, run in a separate environment): per fund, 8 node features
+  # (log realised variance over 5/21/63 days, log EWMA variance, 5- and 21-day return, mean
+  # Fisher-z correlation with the other funds over 21 and 63 days) at `lookback_steps` dates
+  # `stride_days` apart; at each step a graph convolution over the fold's graph (normalised
+  # adjacency with self-loops, built from the training rows only as in `models.graphs`) feeds a
+  # GRU cell per fund; the mean of the final fund states is joined with the 17 common features
+  # LightGBM uses and mapped to the target by a small MLP. Full-batch Adam on the purged training
+  # origins, early stopping on the last `early_stop_share` of them (purged again), quarterly
+  # refits, five seeds averaged (`seeds`). "none" is the same network with no message passing (a
+  # plain GRU per fund): the sequence-model rung.
+  # VERDICT RULE, fixed now: H4 says the network does NOT significantly beat the comparator. With
+  # the H3 loss and test (Fisher-z MSE, one-sided DM-HLN that the network's loss is lower), H4 is
+  # supported unless the primary network has the lower mean loss with p < inference.alpha.
+  # The ablations, the MCS and the comparison with EWMA and DCC are reported beside it.
+  h4:
+    declared_on: "2026-11-01"
+    target: T1
+    horizon_days: 21
+    comparator: lightgbm_graph_knn
+    primary_graph: knn
+    ablations: [sector, random, none]
+    lookback_steps: 8
+    stride_days: 5
+    hidden: 16
+    dropout: 0.1
+    learning_rate: 0.001
+    weight_decay: 0.0001
+    max_epochs: 300
+    patience: 30
+    early_stop_share: 0.2
+    frozen_on: "2026-11-01"   # after the validation rehearsal (kNN network 0.0332 vs 0.0317, p = 0.73); design unchanged
+
+# Phase 8 design for H5 (portfolios) and H6 (hedging). DECLARED 2026-10-11 (step 8.0), before any
+# portfolio or hedge was computed on any window. Rehearsed on validation (2021-2022), then run once
+# on the test window (2023-01-03 to 2026-09-18) through `etfcorr econ --final`. That window has
+# been read for the forecasting ladder (Phase 7); no portfolio or hedging statistic of it is known.
+economics:
+  declared_on: "2026-10-11"
+  # Core panel (25 ETFs), long-only fully invested, rebalanced on the first session of each month
+  # with data dated before that session; weights drift in between. Covariance estimated from the
+  # trailing window of returns at each frequency (rows): N/T = 0.10 (D), 0.24 (W), 0.42 (M), 0.78 (Q).
+  estimation: {D: 252, W: 104, M: 60, Q: 32}
+  # dcc = one-step DCC correlation forecast with EWMA variances, daily frequency only
+  estimators: [sample, ledoit_wolf, ledoit_wolf_corr, rmt, ewma, dcc]
+  # H5 statistic: mean over the minimum-variance cells of these estimators (every frequency where the
+  # estimator exists: 9 cells) of [annualised realised volatility - that of the sample covariance at
+  # the same frequency]. H5 is supported if the one-sided stationary-bootstrap p-value of
+  # "statistic < 0" is below inference.alpha. Reported beside it, not part of the verdict: the same
+  # statistic at M and Q minus at D ("especially at monthly and quarterly horizons"), HRP, costs.
+  h5_estimators: [ledoit_wolf_corr, rmt, dcc]   # ledoit_wolf_corr replaced ledoit_wolf by the rule of h5_variant (step 8.3b)
+  # H6: each core ETF hedged with SPY; hedge ratio = OLS beta over the trailing 126 sessions ending
+  # the day before. Effectiveness = 1 - Var(hedged) / Var(unhedged) inside a regime. Stress = sessions
+  # whose VIX close is above the 90th percentile of the evaluated window; calm = at or below its
+  # median. H6 statistic: mean over the 25 ETFs of [effectiveness in stress - in calm]; supported if
+  # the one-sided stationary-bootstrap p-value of "statistic < 0" is below inference.alpha.
+  # Reported beside it: static and EWMA betas, and a lasso hedge on `lasso_instruments`.
+  hedge_instrument: SPY
+  hedge_window_days: 126
+  lasso_instruments: [SPY, QQQ, IWM, TLT, GLD, HYG]   # no futures-based fund (UUP, DBC flags unverified)
+  stress_quantile: 0.9
+  calm_quantile: 0.5
+  block_days: 21              # mean block of the stationary bootstrap (one rebalance period)
+  # ---- Declared 2026-10-11, AFTER the first validation rehearsal was seen and BEFORE this variant
+  # was run. The design above (tag design-v4-declared) is unchanged; this counts as a configuration tried.
+  h5_variant:
+    declared_on: "2026-10-11"
+    candidate: ledoit_wolf_corr
+    replaces: ledoit_wolf
+    note: >-
+      `ledoit_wolf` shrinks the covariance towards a scaled identity, which also pulls every
+      variance towards the average; `rmt` and `dcc` keep the estimated variances and clean only the
+      correlation, so the three were not treated alike. `ledoit_wolf_corr` applies Ledoit-Wolf to
+      the standardised returns (the convention of correlation.estimators since Phase 2) and keeps
+      the sample variances. It replaces `ledoit_wolf` in h5_estimators only if, on validation, the
+      mean over the frequencies run of [minimum-variance volatility with the candidate minus with
+      `ledoit_wolf`] is negative with a 95% interval that excludes zero. Otherwise it is reported
+      beside the verdict and the design stays as declared.
+    adopted: true             # validation: -0.0101 [-0.0126, -0.0076] in annualised volatility
+  frozen_on: "2026-10-11"
+
+inference:
+  alpha: 0.05
+  multiplicity: holm            # across the six confirmatory tests H1-H6 (Inference: default choice)
+  bootstrap: stationary         # Politis-Romano stationary bootstrap for CIs on dependent data
+  n_bootstrap: 2000
+
+hypotheses:
+  - id: H1
+    phase: 3
+    statement: >-
+      After removing the first eigenmode (market mode), the correlation structure is more
+      similar across horizons (D/W/M) than before removal.
+    test: >-
+      Similarity of correlation matrices and of leading eigenvectors across horizons, before
+      versus after market-mode removal; stationary-bootstrap confidence intervals on the
+      difference.
+  - id: H2
+    phase: 4
+    statement: >-
+      Average cross-sector correlation is higher in high-VIX regimes, but a large part of the
+      increase is explained by volatility (Forbes-Rigobon bias) rather than by a true change in
+      dependence.
+    test: >-
+      Raw versus volatility-adjusted average cross-sector correlation by VIX tercile, with
+      stationary-bootstrap confidence intervals.
+  - id: H3
+    phase: 7
+    statement: >-
+      A machine-learning or graph model beats the best simple baseline (persistence, EWMA,
+      HAR-style, constant correlation) for the 1-month-ahead average cross-sector correlation.
+    test: >-
+      Diebold-Mariano test with Harvey-Leybourne-Newbold correction (Clark-West if the models
+      are nested) on out-of-sample loss against the best simple baseline, plus a Model
+      Confidence Set; evaluated once on the final test period.
+  - id: H4
+    phase: 7
+    statement: >-
+      A temporal graph neural network does not significantly beat a LightGBM model that uses
+      graph-derived features.
+    test: >-
+      Same loss and test as H3 for GNN versus LightGBM with graph features, with random-graph,
+      sector-graph and correlation-graph ablations.
+  - id: H5
+    phase: 8
+    statement: >-
+      Shrinkage, RMT-cleaned and DCC-forecast covariance estimates give lower out-of-sample
+      realized volatility for minimum-variance portfolios than the raw sample covariance,
+      especially at monthly and quarterly horizons.
+    test: >-
+      Realized out-of-sample volatility of minimum-variance and HRP portfolios per estimator,
+      with stationary-bootstrap confidence intervals on the difference to the sample covariance.
+  - id: H6
+    phase: 8
+    statement: >-
+      Hedge effectiveness (variance reduction) is lower in the worst-decile stress periods than
+      in calm periods.
+    test: >-
+      Rolling hedge effectiveness compared between the worst-decile stress regime and calm
+      regimes, with stationary-bootstrap confidence intervals.
+
+# Exploratory hypotheses (ids E1, E2, ...) are added here after results exist. They are not
+# part of the pre-registration fingerprint and are reported as exploratory.
+# Declared 2026-10-12 (docs/FOLLOW_UPS.md), before any of them was run. None changes a verdict. The
+# test window (2023-01 to 2026-09) has been read: every number of E1, E3 and E4 on it is in-sample
+# in that sense and is labelled so where it is reported (docs/FOLLOW_UPS_RESULTS.md).
+exploratory:
+  - id: E1
+    phase: 8
+    statement: >-
+      With the stress label taken from information of the day before (previous-day VIX, or the
+      previous 21-day realised volatility of SPY) and with a Forbes-Rigobon adjustment of the
+      in-regime correlation, the stress-minus-calm gap in SPY hedge effectiveness is smaller than
+      the +0.357 of H6, while the leftover volatility of hedged positions is higher in stress.
+    test: >-
+      scripts/followup_h6.py: hedge effectiveness, adjusted squared correlation, annualised
+      volatility, 5% value at risk and expected shortfall of hedged and unhedged ETFs by regime
+      and by sector, stationary-bootstrap intervals; test window (seen) and 2016-2022.
+  - id: E2
+    phase: 3
+    statement: >-
+      Measured by the adjusted Rand index of average-linkage cluster partitions and by the
+      overlap of the leading k-dimensional eigen-subspace, the correlation structure is more
+      similar across horizons (D/W/M) after removing the market mode than before.
+    test: >-
+      scripts/followup_h1.py on the core panel, 2014-2022: both statistics before and after
+      detoning with stationary-bootstrap intervals on the difference, and the same statistics
+      on a simulated one-factor-plus-sectors panel with a horizon-invariant truth.
+  - id: E3
+    phase: 8
+    statement: >-
+      Cleaned covariances lower realised minimum-variance volatility against the sample
+      covariance when the portfolio is long-short, when the universe is larger (higher N/T),
+      with analytical nonlinear shrinkage, and with a full DCC-GARCH covariance.
+    test: >-
+      scripts/followup_h5.py: the H5 statistic of step 8.5 for the long-short closed-form
+      portfolio, a core-plus-extended panel, the Ledoit-Wolf (2020) nonlinear estimator and DCC
+      with GARCH variance forecasts; validation and test window (seen), bootstrap intervals.
+  - id: E4
+    phase: 7
+    statement: >-
+      An EWMA of the average cross-sector correlation with a slower decay (0.97, 0.99, or the
+      decay chosen on the training window) is a stronger baseline for H3's target than the
+      decay of 0.94, and the Clark-West test over-rejects at this project's sample sizes.
+    test: >-
+      scripts/followup_h3.py: Fisher-z mean squared error of the extra baselines on the
+      validation and test (seen) windows against the recorded models; rejection rate of the
+      Clark-West test in simulated worlds where the larger model has no extra skill.
+  # ---- Pre-2014 replication of H2, H5 and H6, declared 2026-11-01, BEFORE any price before
+  # 2014-01-02 was downloaded or read by this project. The H2/H5/H6 verdicts are known; these three
+  # ask whether they repeat on years no statistic of this project has touched. They are a family of
+  # their own (Holm over E5-E7, m = 3, inference.alpha), reported beside H1-H6, never pooled with
+  # them, and they change no H verdict.
+  # Data: a separate project root with universe start_date 2006-01-01 (the recorded panel from
+  # 2014 is not rebuilt or touched); same vendor (yfinance) and same cleaning as Phase 1.
+  # Panel (fixed now, by rule): the 25 core funds minus SMH and OIH (until 2011-12-20 both were
+  # Merrill Lynch HOLDRS baskets, exchanged into Market Vectors ETFs trading from 2011-12-21, with
+  # about 42% of SMH's and 28% of OIH's holdings sold in the rebalancing: a different product;
+  # checked 2026-11-01 in the SC TO-T/A filings of the Oil Service HOLDRS Trust on EDGAR and the
+  # Van Eck press coverage), keeping those whose first vendor row is on or before 2006-07-10 (panel
+  # start 2006-07-03 plus the 7 days of the core rule). From memory, confirmed by `--panel` on the
+  # downloaded first-row dates (last to start: XOP and XME, 2006-06-22): SOXX IGV XLE XOP XLV IBB
+  # XBI IHI IHF ITA PPA GDX XME: 13 funds, 5 sectors, no clean energy (ICLN and TAN start
+  # in 2008). Whatever the audit gives is the panel; the rule, not the list, is binding. No volume
+  # screen (the core rule's 10M USD would empty the 2006 panel). Reported beside E5-E8, entering no
+  # rule and no panel choice: the share of zero-return days per fund over 2006-07-03 to 2007-06-29
+  # and over the evaluation window (stale prices bias correlations down; young funds in 2006).
+  # Window: evaluation 2007-07-02 to 2013-12-31 (the first year is estimation warm-up), so the
+  # replication never overlaps the 2014-2022 or 2023-2026 windows.
+  # Protocol: commit and tag `replication-freeze-v1` before the download; before the run, only the
+  # first-row dates may be read (to apply the panel rule); one run, guarded by a marker as in the
+  # final runs; no design change after the download.
+  # ---- AMENDMENT (tag replication-freeze-v2), 2026-11-01. Three gaps found while writing
+  # scripts/replication_pre2014.py: they follow from the declared start dates and estimation
+  # windows, not from any data. ORDER, stated plainly: Filippo ran `data download`, `data build`,
+  # `returns` and `--panel` BEFORE this amendment was recorded. What was seen: the download log, the
+  # build's validation warnings (per ticker, the count of days beyond 5 sigma, the median dollar
+  # volume of 2013 and the zero-volume share) and the first-row dates. No E5-E8 statistic, no
+  # correlation, hedge or portfolio number was computed. The panel is the 13 funds listed above.
+  # (1) E6: the W cells (104 weeks) and the DCC (504 daily rows before its first fit) are not full
+  #     on 2007-07-02, so E6 starts on the first month at which all 5 declared cells have their full
+  #     window (scripts/replication_pre2014.py `e6_start`; expected 2008-07-01). Chosen over keeping
+  #     2007-07 with the two daily cells, which would drop DCC and leave the cells with the lowest
+  #     N/T (about 0.05), where cleaning has least to do.
+  # (2) E7: the lasso (beside, not the verdict) starts on the first month with 126 complete
+  #     instrument rows (HYG's first row is 2007-04-11: expected 2007-11-01), not 2007-10.
+  # (3) E8: the phases are fixed calendar periods, so the intervals resample days within each
+  #     phase, not across phases (resampling across them also leaves a short phase with fewer
+  #     than the engine's 30 days in some draws).
+  - id: E5
+    phase: 4
+    statement: >-
+      On 2007-07 to 2013-12 (pre-2014 replication panel), average cross-sector correlation is higher
+      in high-VIX regimes, but a large part of the increase is explained by volatility rather than
+      by a true change in dependence (H2 replicated).
+    test: >-
+      scripts/replication_pre2014.py: the H2 table and the step 4.6 rule unchanged
+      (correlation.h2_verdict.apply_h2_rule): VIX terciles of the replication window, t-1 labels,
+      cross-sector pairs, per-asset delta as the primary line, share threshold 0.5,
+      stationary bootstrap with inference.n_bootstrap draws. Supported if the rule reads
+      "supported"; the clause-1 p-value enters the E5-E7 Holm family.
+  - id: E6
+    phase: 8
+    statement: >-
+      From the first month at which every cell can be estimated (expected 2008-07) to 2013-12
+      (pre-2014 replication panel), shrinkage, RMT-cleaned and DCC-forecast covariances give lower
+      out-of-sample realised volatility for long-only minimum-variance portfolios than the sample
+      covariance (H5 replicated).
+    test: >-
+      scripts/replication_pre2014.py: the H5 statistic and test of step 8.5 with the economics
+      block unchanged (estimators economics.h5_estimators, monthly rebalancing, block_days 21),
+      restricted to the D and W cells, because the M (60 months) and Q (32 quarters) estimation
+      windows do not fit in the data: 5 cells (ledoit_wolf_corr D and W, rmt D and W, dcc D),
+      starting on the first month at which all 5 have their full window (amendment 1).
+      Supported if the one-sided p-value of "statistic < 0" is below inference.alpha.
+  - id: E7
+    phase: 8
+    statement: >-
+      On 2007-07 to 2013-12 (pre-2014 replication panel), hedge effectiveness of an SPY hedge is
+      lower in the worst-decile stress periods than in calm periods (H6 replicated).
+    test: >-
+      scripts/replication_pre2014.py: the H6 statistic and test of step 8.5 with the economics
+      block unchanged (126-session OLS hedge ratio, stress above the 90th VIX percentile of the
+      replication window, calm at or below its median). Supported if the one-sided p-value of
+      "statistic < 0" is below inference.alpha. Reported beside it: the E1 Forbes-Rigobon
+      adjustment and leftover volatility by regime; the lasso hedge from the first month with 126
+      complete instrument rows (amendment 2).
+  # ---- E8, declared 2026-11-01 with E5-E7 and under the same freeze: DESCRIPTIVE, no test, no
+  # p-value, not in any Holm family. Phase dates fixed now from well-known event dates (BNP Paribas
+  # fund freeze 2007-08-09, Lehman filing 2008-09-15, S&P 500 low 2009-03-09, US downgrade
+  # 2011-08-05; from memory [Unverified]; checked 2026-11-02, after the run: all four correct), before any
+  # price of the period was read:
+  #   pre_crisis 2007-01-02..2007-07-31 (starts after the 126-session hedge warm-up)
+  #   onset      2007-08-01..2008-09-12
+  #   peak       2008-09-15..2009-03-09
+  #   recovery   2009-03-10..2011-07-29 (contains the May 2010 flash crash)
+  #   euro       2011-08-01..2011-12-30
+  #   after      2012-01-03..2013-12-31
+  - id: E8
+    phase: 8
+    statement: >-
+      Descriptive, no hypothesis tested: how average cross-sector correlation and SPY hedge
+      effectiveness move through the phases of the 2007-2009 crisis and the 2011 euro crisis on the
+      pre-2014 replication panel (pre-crisis, onset, peak, recovery, euro, after).
+    test: >-
+      scripts/replication_pre2014.py: per phase, the raw average cross-sector correlation and its
+      Forbes-Rigobon adjusted value with the pre-crisis phase as the reference (per-asset delta),
+      the mean over funds of SPY hedge effectiveness and of hedged and unhedged annualised
+      volatility (the E7 hedge), stationary-bootstrap intervals (block_days) drawn within each
+      phase (amendment 3); and the rolling
+      63-day coupling figure with the phase boundaries. Reported as a description only.
+  # ---- E9 and E10, declared 2026-11-01, before any of their statistics was computed. Each is a
+  # family of one, never pooled with H1-H6 or E5-E7, and changes no verdict.
+  # E9 replaces the Forbes-Rigobon adjustment, which over-corrected in E5 and E7 and left the
+  # non-volatility part of H2 unidentified three times, with a factor model. Within each VIX regime,
+  # each fund's daily return is regressed on the factors (intercept, betas re-estimated inside the
+  # regime). In-sample OLS makes the factor fit and the residuals uncorrelated, so each pair's
+  # covariance splits EXACTLY into b_i' S_F b_j + cov(e_i, e_j); dividing by the two volatilities
+  # splits the average cross-sector correlation into a factor part and a residual part.
+  # Factors, fixed now: the Fama-French five (Mkt-RF, SMB, HML, RMW, CMA) and momentum (Mom), daily,
+  # from the Kenneth French data library (fetched by `scripts/factor_residual_e9.py --fetch-factors`,
+  # sha256 recorded; the library revises history and keeps no vintages, which matters for forecasts,
+  # not for this in-sample regime description), plus the daily log returns of USO (oil; a
+  # futures-based fund, used only as a factor), GLD (gold) and TLT (long Treasuries).
+  # Window and panel: core 25 funds, 2014-01-02 to 2022-12-30, VIX terciles of that window, t-1
+  # labels, low tercile as the reference (the H2 conventions). Beside it, no verdict: the same
+  # statistics on 2023-01-03 to 2026-09-18. CORRECTION 2026-11-01, after the run: this comment first
+  # called the window "the H2 one"; H2 used all the data, 2014-01-03 to 2026-09-25. The dates were
+  # always the binding part, and the two E9 windows together cover H2's. The 2007-2013 replication root has no USO, so E9 is not run there.
+  # Reported beside, not the verdict: the factor and residual parts of the raw high-minus-low rise
+  # (with the share carried by the factors), full-window betas instead of regime betas, the four
+  # factors Mkt-RF, SMB, HML, Mom only, and day-t labels.
+  - id: E9
+    phase: 4
+    statement: >-
+      In 2014-2022, the average cross-sector correlation of the residuals of a nine-factor model
+      (Fama-French five, momentum, oil, gold, long Treasuries) is higher in the high-VIX tercile than
+      in the low one: co-movement beyond the common factors rises in high-volatility periods.
+    test: >-
+      scripts/factor_residual_e9.py: within each VIX tercile (t-1 labels), OLS of each core fund on
+      the factors with an intercept; statistic = high-minus-low difference of the average
+      cross-sector residual correlation. Stationary bootstrap of days (returns, factors and labels
+      together; inference.n_bootstrap draws; mean block length as in H2, round(n^(1/3)); seed 0),
+      regressions refitted in every draw; one-sided p = (1 + draws <= 0) / (draws + 1). Supported if
+      p < inference.alpha. Run once, guarded by the marker reports/tables/e9_factor_marker.json.
+  # E10, the forward hold-out of E3. On the seen windows, long-short minimum-variance portfolios
+  # built on the Ledoit-Wolf (2020) nonlinear shrinkage were less volatile than those built on the
+  # sample covariance (pooled over frequencies: -0.50 points on 2021-2022, -5.1 on 2023-2026). The
+  # hold-out window is 2026-10-01 to 2027-09-30 (twelve monthly rebalances): no price dated in it
+  # was on disk when this was declared (the main download ends 2026-09-25). Data: a separate root
+  # holdout/post2026 whose three config files are symlinks to the main ones, downloaded as of
+  # 2027-09-30 or later. Estimation windows, monthly rebalancing and the walk-forward are those of
+  # the economics block; returns before the window serve only as estimation history.
+  # Not included: a re-test of H3 (one year holds about 11 independent 21-day months, too few).
+  - id: E10
+    phase: 8
+    statement: >-
+      On 2026-10-01 to 2027-09-30, long-short minimum-variance portfolios of the 25 core funds built
+      on the Ledoit-Wolf (2020) analytical nonlinear shrinkage covariance have lower realised
+      volatility than those built on the sample covariance (forward hold-out of E3).
+    test: >-
+      scripts/holdout_e10.py: the E3 cells (scripts/followup_h5.py, run_cells and tables) for the
+      `minvar_ls` portfolio with the `sample` and `nonlinear` estimators at the D, W, M and Q
+      frequencies (economics.estimation); statistic = mean over the four frequencies of annualised
+      volatility (nonlinear minus sample), joint stationary bootstrap of days (block_days,
+      inference.n_bootstrap draws, seed 0); one-sided p = (1 + draws >= 0) / (draws + 1). Supported
+      if p < inference.alpha. Reported beside: nonlinear_corr, ledoit_wolf_corr and rmt, the
+      long-only cells and gross leverage. Refuses to run before 2027-10-07 or on data that stop
+      before 2027-09-30; run once, guarded by the marker reports/tables/e10_holdout_marker.json.

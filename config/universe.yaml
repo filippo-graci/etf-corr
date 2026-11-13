@@ -1,0 +1,114 @@
+# ETF universe (Phase 1, step 1.1b): panels fixed from the audit of 2026-09-21 (step 1.1).
+#
+# STATUS: panels and `inception` come from `etfcorr data check-universe` (yfinance, run on
+# 2026-09-21). Names, the `futures_based` flags of UUP and DBC and overlap flags are still from
+# v2 / memory (UNVERIFIED); step 1.1 revision 2 adds the vendor name to the audit so names can be
+# compared with the vendor's.
+#
+# Panel rules (decided by the project owner on 2026-09-21, applied identically to every ticker):
+#   core     = ETF-like, first vendor row at or before the download start (+ 7 days), and median
+#              daily dollar volume >= min_adv_usd over the last 252 sessions of the audit.
+#              Effect: one common core sample from 2014-01-02, covering the whole 2016-2020
+#              training split.
+#   extended = (a) v2's "Extended / optional" list, and (b) candidates that fail a core
+#              condition (short history, thin trading), plus futures-based funds and the crypto
+#              series. Six of group (a) passed both core conditions in the 2026-09-21 audit (VDE,
+#              PBW, NLR, IHF, REMX, PICK). Extended tickers are analysed as separate sub-panels
+#              over their own common periods; they never shorten the core.
+#   control  = market / macro controls (not themes).
+#
+# UPDATE 2026-09-28 (Question 3, docs/DECISION_LOG.md): IHF and REMX promoted from extended to
+# core -- the two of the six eligible candidates with the lowest measured mean weighted-Jaccard
+# holdings overlap against their own sector's existing core members (IHF 0.0276 vs XLV/IBB/XBI/IHI;
+# REMX 0.0108 vs GDX/GDXJ/XME/COPX/SIL; real overlap from data/external/overlap_matrix.parquet via
+# scripts/check_overlap_pairs.py, not from memory). VDE, PBW, NLR and PICK stay extended (higher
+# measured overlap or, for PICK, a smaller overlap margin than REMX/IHF). Core N: 23 -> 25 (T
+# unchanged at each horizon). Quarterly q=N/T rises 23/49=0.4694 -> 25/49=0.5102 -- still short of
+# q=1 (singular) but remains in the ill-conditioned, exploratory-only regime already flagged above.
+# Moved out of core in 1.1b: BOTZ, AIQ, BLOK, ARKF, FINX (history starts 2016-2019, after the
+# 2014 download start) and QCLN (median dollar volume 5.5M USD < 10M USD). Their v2 rows said
+# "core"; the deviation is a decision-log entry in docs/STATUS.md. Fintech/crypto therefore has
+# no core member: it is analysed as extended sub-panels only.
+# `inception` = first row of the vendor download, filled only where it is later than
+# `start_date` (a lower bound on the true launch date, not the launch date itself).
+# GLD appears in both the metals and the control rows of v2; it is kept once, as a control.
+# Overlap flags list only the overlaps that v2 states (SMH/SOXX, ICLN/TAN/QCLN); the measured
+# holdings overlap comes from Phase 2 (`holdings.py`). By convention the later ticker points to
+# the earlier ones.
+# Validated by etfcorr.config.UniverseConfig.
+version: 1
+start_date: "2014-01-01"      # download start; earlier than the first split to allow window warm-up
+min_adv_usd: 10000000         # median daily dollar volume screen for core/extended ETFs (step 1.1)
+
+tickers:
+  # ---- AI / semiconductors
+  - {ticker: SMH,  sector: ai_semis, panel: core,     name: "VanEck Semiconductor ETF"}
+  - {ticker: SOXX, sector: ai_semis, panel: core,     name: "iShares Semiconductor ETF", overlaps_with: [SMH]}
+  - {ticker: IGV,  sector: ai_semis, panel: core,     name: "iShares Expanded Tech-Software Sector ETF"}
+  - {ticker: BOTZ, sector: ai_semis, panel: extended, name: "Global X Robotics & Artificial Intelligence ETF", inception: 2016-09-13, notes: "moved from core in 1.1b: first vendor row after the train start"}
+  - {ticker: AIQ,  sector: ai_semis, panel: extended, name: "Global X Artificial Intelligence & Technology ETF", inception: 2018-05-16, notes: "moved from core in 1.1b: first vendor row after the train start"}
+  - {ticker: CLOU, sector: ai_semis, panel: extended, name: "Global X Cloud Computing ETF", inception: 2019-04-16, notes: "recent median dollar volume 4.2M USD, below the core rule"}
+  - {ticker: WCLD, sector: ai_semis, panel: extended, name: "WisdomTree Cloud Computing Fund", inception: 2019-09-06}
+
+  # ---- traditional energy
+  - {ticker: XLE,  sector: energy_trad, panel: core,     name: "Energy Select Sector SPDR Fund"}
+  - {ticker: XOP,  sector: energy_trad, panel: core,     name: "SPDR S&P Oil & Gas Exploration & Production ETF"}
+  - {ticker: OIH,  sector: energy_trad, panel: core,     name: "VanEck Oil Services ETF"}
+  - {ticker: AMLP, sector: energy_trad, panel: core,     name: "Alerian MLP ETF"}
+  - {ticker: USO,  sector: energy_trad, panel: extended, name: "United States Oil Fund", futures_based: true, notes: "futures roll yield"}
+  - {ticker: UNG,  sector: energy_trad, panel: extended, name: "United States Natural Gas Fund", futures_based: true, notes: "futures roll yield"}
+  - {ticker: VDE,  sector: energy_trad, panel: extended, name: "Vanguard Energy ETF"}
+
+  # ---- clean energy / transition
+  - {ticker: ICLN, sector: clean_energy, panel: core,     name: "iShares Global Clean Energy ETF"}
+  - {ticker: TAN,  sector: clean_energy, panel: core,     name: "Invesco Solar ETF", overlaps_with: [ICLN]}
+  - {ticker: LIT,  sector: clean_energy, panel: core,     name: "Global X Lithium & Battery Tech ETF"}
+  - {ticker: URA,  sector: clean_energy, panel: core,     name: "Global X Uranium ETF"}
+  - {ticker: QCLN, sector: clean_energy, panel: extended, name: "First Trust NASDAQ Clean Edge Green Energy Index Fund", overlaps_with: [ICLN, TAN], notes: "moved from core in 1.1b: recent median dollar volume 5.5M USD < 10M USD"}
+  - {ticker: FAN,  sector: clean_energy, panel: extended, name: "First Trust Global Wind Energy ETF", notes: "recent median dollar volume about 1.0M USD, below the core rule"}
+  - {ticker: PBW,  sector: clean_energy, panel: extended, name: "Invesco WilderHill Clean Energy ETF"}
+  - {ticker: NLR,  sector: clean_energy, panel: extended, name: "VanEck Uranium and Nuclear ETF", notes: "renamed at some point (unverified); 3.5% zero-volume days in the audit"}
+
+  # ---- healthcare / biotech
+  - {ticker: XLV,  sector: healthcare, panel: core,     name: "Health Care Select Sector SPDR Fund"}
+  - {ticker: IBB,  sector: healthcare, panel: core,     name: "iShares Biotechnology ETF"}
+  - {ticker: XBI,  sector: healthcare, panel: core,     name: "SPDR S&P Biotech ETF"}
+  - {ticker: IHI,  sector: healthcare, panel: core,     name: "iShares U.S. Medical Devices ETF"}
+  - {ticker: ARKG, sector: healthcare, panel: extended, name: "ARK Genomic Revolution ETF", inception: 2014-10-31}
+  - {ticker: IHF,  sector: healthcare, panel: core,     name: "iShares U.S. Healthcare Providers ETF", notes: "promoted extended->core 2026-09-28, Question 3 (docs/DECISION_LOG.md): lowest measured holdings overlap (0.0276) vs the sector's core members"}
+
+  # ---- defense / aerospace
+  - {ticker: ITA,  sector: defense, panel: core,     name: "iShares U.S. Aerospace & Defense ETF"}
+  - {ticker: XAR,  sector: defense, panel: core,     name: "SPDR S&P Aerospace & Defense ETF"}
+  - {ticker: PPA,  sector: defense, panel: core,     name: "Invesco Aerospace & Defense ETF"}
+  - {ticker: SHLD, sector: defense, panel: extended, name: "Global X Defense Tech ETF", inception: 2023-09-14, notes: "post-2023 sub-panel only"}
+
+  # ---- metals / mining
+  - {ticker: GDX,  sector: metals_mining, panel: core,     name: "VanEck Gold Miners ETF"}
+  - {ticker: GDXJ, sector: metals_mining, panel: core,     name: "VanEck Junior Gold Miners ETF"}
+  - {ticker: XME,  sector: metals_mining, panel: core,     name: "SPDR S&P Metals & Mining ETF"}
+  - {ticker: COPX, sector: metals_mining, panel: core,     name: "Global X Copper Miners ETF"}
+  - {ticker: SIL,  sector: metals_mining, panel: core,     name: "Global X Silver Miners ETF"}
+  - {ticker: REMX, sector: metals_mining, panel: core,     name: "VanEck Rare Earth and Strategic Metals ETF", notes: "promoted extended->core 2026-09-28, Question 3 (docs/DECISION_LOG.md): lowest measured holdings overlap (0.0108) vs the sector's core members"}
+  - {ticker: PICK, sector: metals_mining, panel: extended, name: "iShares MSCI Global Metals & Mining Producers ETF"}
+
+  # ---- fintech / crypto (extended sub-panels only; see header)
+  - {ticker: ARKF, sector: fintech_crypto, panel: extended, name: "ARK Fintech Innovation ETF", inception: 2019-02-04, notes: "moved from core in 1.1b: first vendor row after the train start; recent median dollar volume 8.2M USD"}
+  - {ticker: FINX, sector: fintech_crypto, panel: extended, name: "Global X FinTech ETF", inception: 2016-09-13, notes: "moved from core in 1.1b: first vendor row after the train start; recent median dollar volume 1.5M USD"}
+  - {ticker: BLOK, sector: fintech_crypto, panel: extended, name: "Amplify Transformational Data Sharing ETF", inception: 2018-01-25, notes: "moved from core in 1.1b: first vendor row after the train start"}
+  - {ticker: IBIT, sector: fintech_crypto, panel: extended, name: "iShares Bitcoin Trust ETF", inception: 2024-01-11, notes: "spot Bitcoin ETF, launched January 2024: post-2024 sub-panel only"}
+  - {ticker: BITO, sector: fintech_crypto, panel: extended, name: "ProShares Bitcoin Strategy ETF", inception: 2021-10-20, futures_based: true, notes: "futures roll yield; holds CME bitcoin futures, not bitcoin (checked 2026-10-12 in search listings of the ProShares prospectus; not read in full)"}
+  - {ticker: BITQ, sector: fintech_crypto, panel: extended, name: "Bitwise Crypto Industry Innovators ETF", inception: 2021-05-12, notes: "recent median dollar volume 3.2M USD, below the core rule"}
+  - {ticker: BTC-USD, sector: fintech_crypto, panel: extended, name: "Bitcoin in USD (Yahoo Finance series)", inception: 2014-09-17, notes: "24/7 market; Yahoo daily bars close at 00:00 UTC (unverified), not 16:00 ET"}
+  - {ticker: ETH-USD, sector: fintech_crypto, panel: extended, name: "Ether in USD (Yahoo Finance series)", inception: 2017-11-09, notes: "24/7 market; Yahoo daily bars close at 00:00 UTC (unverified), not 16:00 ET"}
+
+  # ---- controls (market mode, regimes, hedge instruments; not themes)
+  - {ticker: SPY,  sector: control, panel: control, name: "SPDR S&P 500 ETF Trust"}
+  - {ticker: QQQ,  sector: control, panel: control, name: "Invesco QQQ Trust"}
+  - {ticker: IWM,  sector: control, panel: control, name: "iShares Russell 2000 ETF"}
+  - {ticker: TLT,  sector: control, panel: control, name: "iShares 20+ Year Treasury Bond ETF"}
+  - {ticker: GLD,  sector: control, panel: control, name: "SPDR Gold Shares"}
+  - {ticker: UUP,  sector: control, panel: control, name: "Invesco DB US Dollar Index Bullish Fund", futures_based: true, notes: "futures-based: long ICE US Dollar Index futures (checked 2026-10-12 in search listings of the SEC 424B3 filings; prospectus not read in full)"}
+  - {ticker: "^VIX", sector: control, panel: control, name: "CBOE Volatility Index", notes: "index, not investable"}
+  - {ticker: DBC,  sector: control, panel: control, name: "Invesco DB Commodity Index Tracking Fund", futures_based: true, notes: "optional control; futures-based: commodity futures of the DBIQ Optimum Yield index (checked 2026-10-12 in search listings of the SEC 424B3 filings; prospectus not read in full)"}
+  - {ticker: HYG,  sector: control, panel: control, name: "iShares iBoxx $ High Yield Corporate Bond ETF", notes: "optional control"}

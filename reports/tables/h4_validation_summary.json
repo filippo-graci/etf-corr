@@ -1,0 +1,52 @@
+{
+  "mode": "validation",
+  "config_hash": "5cc5f0efd608",
+  "commit": "fd18ba95de75c14062959dfd6c5957626993a81f",
+  "dirty": true,
+  "h4": {
+    "primary": "tgnn_knn",
+    "comparator": "lightgbm_graph_knn",
+    "loss_primary": 0.03322733260130252,
+    "loss_comparator": 0.03167806194513619,
+    "mean_diff": 0.0015492706561663287,
+    "p_one_sided": 0.7290603136121225,
+    "alpha": 0.05,
+    "network_significantly_better": false,
+    "h4_supported": true,
+    "n_dates": 482,
+    "n_effective": 22.952380952380953,
+    "mcs_kept": [
+      "historical_mean",
+      "ewma",
+      "dcc",
+      "tgnn_random",
+      "tgnn_sector",
+      "tgnn_knn",
+      "tgnn_none",
+      "lightgbm_graph_knn",
+      "elastic_net"
+    ]
+  },
+  "design": {
+    "declared_on": "2026-11-01",
+    "target": "T1",
+    "horizon_days": 21,
+    "comparator": "lightgbm_graph_knn",
+    "primary_graph": "knn",
+    "ablations": [
+      "sector",
+      "random",
+      "none"
+    ],
+    "lookback_steps": 8,
+    "stride_days": 5,
+    "hidden": 16,
+    "dropout": 0.1,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "max_epochs": 300,
+    "patience": 30,
+    "early_stop_share": 0.2,
+    "frozen_on": null
+  }
+}

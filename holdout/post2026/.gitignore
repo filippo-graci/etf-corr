@@ -1,0 +1,8 @@
+# vendor data is never committed (personal-use terms); the download log (.json with sha256) is
+data/raw/*
+!data/raw/*.json
+data/interim/
+data/processed/
+data/external/
+artifacts/
+reports/

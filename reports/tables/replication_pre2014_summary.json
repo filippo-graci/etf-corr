@@ -1,0 +1,157 @@
+{
+  "status": "pre-2014 replication, run once; E5-E7 confirmatory as a family of their own, E8 descriptive",
+  "config_hash": "8ac298184065",
+  "commit": "0a3f0d73c60fe64c92d2d614737526279026a4bf",
+  "panel": [
+    "SOXX",
+    "IGV",
+    "XLE",
+    "XOP",
+    "XLV",
+    "IBB",
+    "XBI",
+    "IHI",
+    "IHF",
+    "ITA",
+    "PPA",
+    "GDX",
+    "XME"
+  ],
+  "panel_first_day": "2006-06-23",
+  "window": [
+    "2007-07-02",
+    "2013-12-31"
+  ],
+  "e6_start_note": "E6 starts on the first month at which every D and W cell and the DCC have their full estimation window (e6_start)",
+  "E5": {
+    "status": "E5, pre-2014 replication of H2; the step 4.6 rule unchanged",
+    "verdict": "supported",
+    "clause1_direction": true,
+    "clause1_p_bootstrap": 0.0009995002498750624,
+    "clause2": "supported",
+    "threshold": 0.5,
+    "primary": {
+      "name": "primary",
+      "share": 1.5075732217958544,
+      "share_lower": 1.183752598875304
+    },
+    "market_shares": {
+      "SPY return delta": 1.9719303209236068,
+      "VIX log-change delta": 0.5730087388203772
+    },
+    "residual_reading": "not identified",
+    "notes": [
+      "the lower bound of the primary share interval is also >= 0.5",
+      "share above 1 on primary, SPY return delta: the adjustment overshoots (the adjusted difference has the opposite sign to the raw one); this is not 'more than 100% explained by volatility'",
+      "the non-volatility part of the change is not identified: the adjusted high-minus-low difference changes sign or spans zero across the lines"
+    ],
+    "settings": {
+      "n_bootstrap": 2000,
+      "seed": 0,
+      "mean_block_length": 12.0,
+      "n_assets": 13,
+      "n_cross_sector_pairs": 64,
+      "n_rows": 1637,
+      "regime": 2,
+      "reference": 0
+    },
+    "robustness": [
+      {
+        "line": "day-t labels (contemporaneous)",
+        "clause1": true,
+        "share": 1.403549766022403,
+        "share_lower": 1.1274614401259353,
+        "same_reading_as_primary_rule": true
+      },
+      {
+        "line": "mean block length 60",
+        "clause1": true,
+        "share": 1.5075732217958544,
+        "share_lower": 0.9670240618539332,
+        "same_reading_as_primary_rule": true
+      },
+      {
+        "line": "mean block length 120",
+        "clause1": true,
+        "share": 1.5075732217958544,
+        "share_lower": 0.8642167855061527,
+        "same_reading_as_primary_rule": true
+      },
+      {
+        "line": "within-sector pairs (contrast)",
+        "clause1": true,
+        "share": 2.0511137277252174,
+        "share_lower": 1.51521447160424,
+        "same_reading_as_primary_rule": true
+      }
+    ],
+    "supported": true
+  },
+  "E6": {
+    "statistic": 0.0017165446072060163,
+    "ci_lower": 0.00036357375431007996,
+    "ci_upper": 0.0031217809124483888,
+    "p_one_sided": 0.9940029985007496,
+    "alpha": 0.05,
+    "n_cells": 5,
+    "cells": [
+      "minvar|D|ledoit_wolf_corr",
+      "minvar|D|rmt",
+      "minvar|D|dcc",
+      "minvar|W|ledoit_wolf_corr",
+      "minvar|W|rmt"
+    ],
+    "n_days": 1386,
+    "h5_supported": false,
+    "variant": {
+      "candidate": "ledoit_wolf_corr",
+      "replaces": "ledoit_wolf",
+      "difference": -0.002551846787422263,
+      "ci_lower": -0.004311149195899457,
+      "ci_upper": -0.0011925148706007163,
+      "rule_met": true
+    },
+    "window": [
+      "2008-07-01",
+      "2013-12-31"
+    ]
+  },
+  "E7": {
+    "method": "rolling",
+    "statistic": 0.20672608291450556,
+    "ci_lower": 0.1203280634538219,
+    "ci_upper": 0.26706020783323664,
+    "p_one_sided": 1.0,
+    "alpha": 0.05,
+    "he_stress": 0.7304425226869533,
+    "he_calm": 0.5237164397724476,
+    "n_stress": 164,
+    "n_calm": 821,
+    "h6_supported": false,
+    "window": [
+      "2007-07-02",
+      "2013-12-31"
+    ]
+  },
+  "holm": {
+    "E5": {
+      "p": 0.0009995002498750624,
+      "p_holm": 0.0029985007496251873,
+      "own_rule": true
+    },
+    "E6": {
+      "p": 0.9940029985007496,
+      "p_holm": 1.0,
+      "own_rule": false
+    },
+    "E7": {
+      "p": 1.0,
+      "p_holm": 1.0,
+      "own_rule": false
+    }
+  },
+  "bootstrap": {
+    "n": 2000,
+    "seed": 0
+  }
+}

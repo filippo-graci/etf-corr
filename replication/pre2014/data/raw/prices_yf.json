@@ -1,0 +1,332 @@
+{
+  "asof": "2013-12-31",
+  "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+  "received": [
+    "AMLP",
+    "COPX",
+    "GDX",
+    "GDXJ",
+    "GLD",
+    "HYG",
+    "IBB",
+    "ICLN",
+    "IGV",
+    "IHF",
+    "IHI",
+    "ITA",
+    "IWM",
+    "LIT",
+    "OIH",
+    "PPA",
+    "QQQ",
+    "REMX",
+    "SIL",
+    "SMH",
+    "SOXX",
+    "SPY",
+    "TAN",
+    "TLT",
+    "URA",
+    "XAR",
+    "XBI",
+    "XLE",
+    "XLV",
+    "XME",
+    "XOP",
+    "^VIX"
+  ],
+  "requested": [
+    "SMH",
+    "SOXX",
+    "IGV",
+    "XLE",
+    "XOP",
+    "OIH",
+    "AMLP",
+    "ICLN",
+    "TAN",
+    "LIT",
+    "URA",
+    "XLV",
+    "IBB",
+    "XBI",
+    "IHI",
+    "IHF",
+    "ITA",
+    "XAR",
+    "PPA",
+    "GDX",
+    "GDXJ",
+    "XME",
+    "COPX",
+    "SIL",
+    "REMX",
+    "SPY",
+    "QQQ",
+    "IWM",
+    "TLT",
+    "GLD",
+    "^VIX",
+    "HYG"
+  ],
+  "sha256": "c4cfb67d02f9fbd56c0d6d03d48589a8eb53c438b0257d840c34e2df92e16481",
+  "start": "2006-01-01",
+  "tickers": {
+    "AMLP": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 844,
+      "sha256": "cfb9fa7d787e7ae0e314b1845e075cbd55396cd91b69db4b4aa317d599575f42",
+      "status": "fetched"
+    },
+    "COPX": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 933,
+      "sha256": "d032e8f2d314e00a97d58c76b7902b455a43e2c93a846dbdf30547eae5bc9419",
+      "status": "fetched"
+    },
+    "GDX": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 1917,
+      "sha256": "955023f531ff8fa35ccb37b67484aacb088b9c754b95d751ebc7ac9b43ca3718",
+      "status": "fetched"
+    },
+    "GDXJ": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 1041,
+      "sha256": "27d414c08d5168a23866c9569b379ff17c581010a191b62a8921f90ae5ba5a73",
+      "status": "fetched"
+    },
+    "GLD": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 2013,
+      "sha256": "ba1d5ce3a325b5ac2fc57d802e7d112fd794d554b318c6a1e1a28e2563577a03",
+      "status": "fetched"
+    },
+    "HYG": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 1695,
+      "sha256": "63a0f493b34eab5ad47d11aa28f8376e41ae4ed335db6b2544f6cc5d03e408b9",
+      "status": "fetched"
+    },
+    "IBB": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 2013,
+      "sha256": "acae3bf83190f3773600648c36573a5bb7528f8587d743420c9a42b78e3c3049",
+      "status": "fetched"
+    },
+    "ICLN": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 1390,
+      "sha256": "bb8759a7c5e46f44408ab3c5b979349faa6eb021e597ffdcaf9e6f87b72ab408",
+      "status": "fetched"
+    },
+    "IGV": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 2013,
+      "sha256": "1ea420f4d1ec897a5cde79f7005e63fa4954f6d39da973712da13e69142e4ad5",
+      "status": "fetched"
+    },
+    "IHF": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 1928,
+      "sha256": "cd48185a979734505d12505a6aa9af6dcef8c88c8412476a79a1f2876ce5fd7c",
+      "status": "fetched"
+    },
+    "IHI": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 1928,
+      "sha256": "54c6c47a1ac4e927623dfaa076b0413b4c67bc4ed9a0f313626f79100dca233e",
+      "status": "fetched"
+    },
+    "ITA": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 1928,
+      "sha256": "a646d7f9ee19d96a8654249e62c75f8fb491d5daf2ddcb28289bf83dc96d3975",
+      "status": "fetched"
+    },
+    "IWM": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 2013,
+      "sha256": "bb198c8ef63ecb58f161002cc406433334bfdeb19c5f57b69eba9acd61be0ca6",
+      "status": "fetched"
+    },
+    "LIT": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 867,
+      "sha256": "c09a7211141a56c46fc1028fb62a968259ce876fd5041f2ceb4644dcf91b4353",
+      "status": "fetched"
+    },
+    "OIH": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 2013,
+      "sha256": "fd6defcd7f4b21a7c2862fb3fa535169a2a40d472431eb016ffc9072e9e72801",
+      "status": "fetched"
+    },
+    "PPA": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 2013,
+      "sha256": "f5f5c34673540659b6582b2e2fc88338c9fb821d332bc4f1f2739d1b91fba7c3",
+      "status": "fetched"
+    },
+    "QQQ": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 2013,
+      "sha256": "dfb13238f5cbf9b7d42548a143970ffd8d359b151f6f8bd306193c6e8b08b67d",
+      "status": "fetched"
+    },
+    "REMX": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 799,
+      "sha256": "89312b238ac00d93591678b653a77aaff35c2dc6357ddeff4ee315b7c3b80d0d",
+      "status": "fetched"
+    },
+    "SIL": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 933,
+      "sha256": "2165ecbe3162a97e6f4873ce3122d89453ddf0c23419e40d3156a3872dfff782",
+      "status": "fetched"
+    },
+    "SMH": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 2013,
+      "sha256": "2f154f504cdb66830922df4b0a2fec70d191c71b0a6bfa3abb13ca0f3fdda13d",
+      "status": "fetched"
+    },
+    "SOXX": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 2013,
+      "sha256": "038d67c030e3bb5ff5f95a594f3f87a7a179f419f94e63bb532c8b83afa2b144",
+      "status": "fetched"
+    },
+    "SPY": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 2013,
+      "sha256": "c074da87d868557178012126df274a42551fb0376ba3e0647d8bfe98e3885fd4",
+      "status": "fetched"
+    },
+    "TAN": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 1440,
+      "sha256": "6b045616b196aecb9da808b4e73259cbe06ba7b90247c9ae2047298184b49390",
+      "status": "fetched"
+    },
+    "TLT": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 2013,
+      "sha256": "790682a8be560fbea1212a8a7960951f8b45fcba80c110d044bcc55d83339eb5",
+      "status": "fetched"
+    },
+    "URA": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 793,
+      "sha256": "9f0b321125aadc8bfe6bf75648d78ab08f129846441b8f14cbda1d201c5f7bfc",
+      "status": "fetched"
+    },
+    "XAR": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 567,
+      "sha256": "3dd79ceaa2af6a346125ff882ad82bca79fe6593be4c064007dce43855518aa4",
+      "status": "fetched"
+    },
+    "XBI": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 1990,
+      "sha256": "f710fbce17a466318dfe1ad1c0576fe7bdf68eb29caf5b12822d7b0d0f8734e7",
+      "status": "fetched"
+    },
+    "XLE": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 2013,
+      "sha256": "be7e6ab26d46e7b65af06eca6ad1751ad7373d6bb9a9e1d075d88d83bacb2cf9",
+      "status": "fetched"
+    },
+    "XLV": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 2013,
+      "sha256": "31520ef1a2b37f32acd851dfe5dc3725855e3bb5840deec9e4ddab65d8727a2d",
+      "status": "fetched"
+    },
+    "XME": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 1895,
+      "sha256": "b0afe9be9ebede972e4dd6d1c6fb2059d4df2d8d46df65ae0320ccc3c36a12e1",
+      "status": "fetched"
+    },
+    "XOP": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 1895,
+      "sha256": "f0bee96681737f80e5a0422434777bad8829f183f322f657b3edbb8d1fefa57b",
+      "status": "fetched"
+    },
+    "^VIX": {
+      "asof": "2013-12-31",
+      "error": "",
+      "fetched_at": "2026-11-01T20:16:38.165609+00:00",
+      "rows": 2013,
+      "sha256": "73103061b82b512d677861ba7cea68ed28c2c2a18b01b72932df9d9884a09873",
+      "status": "fetched"
+    }
+  }
+}
